@@ -12,14 +12,5 @@ fn main() {
 
 ```
 
-result
+<img width="111" height="102" alt="Screenshot 2025-12-06 at 1 41 06" src="https://github.com/user-attachments/assets/49adbf17-16b0-4af0-bec1-74cd8ad422b8" />
 
-```
-╭─────────────╮
-│ Hello world │
-╰─────────────╯
-
-＿人人人人人人＿
-＞ 突然の死! ＜
-￣Y^Y^Y^Y^Y^Y^￣
-```
