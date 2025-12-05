@@ -64,8 +64,8 @@ fn normal_deco<T: AsRef<str>>(s: T) -> String {
 
 fn shi_deco<T: AsRef<str>>(s: T) -> String {
     let max_chars = get_max_len(&s);
-    let top = format!("＿{}＿\n", mul_str(&"人", max_chars / 2));
-    let btm = format!("￣{}￣\n", mul_str(&"Y^", max_chars / 2));
+    let top = format!("＿{}＿\n", mul_str(&"人", max_chars / 2 + 2));
+    let btm = format!("￣{}￣\n", mul_str(&"Y^", max_chars / 2 + 2));
 
     let mut ss = top;
     for l in s.as_ref().lines() {
