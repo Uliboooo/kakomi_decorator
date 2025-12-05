@@ -4,6 +4,7 @@ use unicode_width::UnicodeWidthChar;
 pub enum DecoType {
     #[default]
     Normal,
+    TotsuzenNoShi,
 }
 
 pub trait Kakomi {
@@ -14,6 +15,7 @@ impl Kakomi for String {
     fn decorate(&self, deco: DecoType) -> String {
         match deco {
             DecoType::Normal => normal_deco(self),
+            DecoType::TotsuzenNoShi => shi_deco(self),
         }
     }
 }
@@ -56,8 +58,22 @@ fn normal_deco<T: AsRef<str>>(s: T) -> String {
         let fill_space = mul_str(&" ", rem);
         result.push_str(format!("\n│ {l}{fill_space} │").as_str());
     }
-    result.push_str(format!("\n{}", end_line.as_str()).as_str());
+    result.push_str(format!("\n{}\n", end_line.as_str()).as_str());
     result
+}
+
+fn shi_deco<T: AsRef<str>>(s: T) -> String {
+    let max_chars = get_max_len(&s);
+    let top = format!("＿{}＿\n", mul_str(&"人", max_chars / 2));
+    let btm = format!("￣{}￣\n", mul_str(&"Y^", max_chars / 2));
+
+    let mut ss = top;
+    for l in s.as_ref().lines() {
+        let fit_spc = mul_str(&" ", max_chars - get_str_len(l));
+        ss.push_str(&format!("＞ {}{} ＜\n", l, fit_spc));
+    }
+    ss.push_str(&btm);
+    ss
 }
 
 #[cfg(test)]
@@ -67,8 +83,20 @@ mod tests {
     #[test]
     fn normal_test() {
         let content = "foo".to_string();
+        // Default = normal
         let formatted = content.decorate(DecoType::default());
 
-        assert_eq!("╭─────╮\n│ foo │\n╰─────╯", formatted);
+        assert_eq!("╭─────╮\n│ foo │\n╰─────╯\n", formatted);
+    }
+
+    #[test]
+    fn shi_test() {
+        let content = "突然の死!!".to_string();
+        let formateed = content.decorate(DecoType::TotsuzenNoShi);
+
+        assert_eq!(
+            "＿人人人人人＿\n＞ 突然の死!! ＜\n￣Y^Y^Y^Y^Y^￣\n",
+            formateed
+        );
     }
 }
